@@ -1,8 +1,10 @@
-import express, { Application } from 'express';
-import productRouter from './routes/product.route';
+import express from 'express';
+import type { Application } from 'express';
+
+import { API_CONFIG } from './config/constants';
 import { connectToMongoDB } from './config/database';
 import { env, validateEnvironment } from './config/environment';
-import { API_CONFIG } from './config/constants';
+import productRouter from './routes/product.route';
 
 const startHttpApi = (): void => {
   // Create Express app

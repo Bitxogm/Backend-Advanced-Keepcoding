@@ -10,6 +10,8 @@
     "dev": "nodemon",
     "build": "tsc",
     "start": "node dist/src/server.js",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

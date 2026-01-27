@@ -1,5 +1,6 @@
 //Creamos router de express para tener todos los endpoints relacionados con productos en un solo archivo
-import express, { Request, Response } from 'express';
+import type { Request, Response } from 'express';
+import express from 'express';
 
 import Product from '../models/product';
 

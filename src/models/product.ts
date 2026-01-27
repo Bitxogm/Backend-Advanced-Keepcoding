@@ -1,4 +1,5 @@
-import mongoose, { Document } from 'mongoose';
+import type { Document } from 'mongoose';
+import mongoose from 'mongoose';
 
 
 // Importamos mongoose y Document para definir la interfaz del producto y tener metodos de mongoose disponibles.

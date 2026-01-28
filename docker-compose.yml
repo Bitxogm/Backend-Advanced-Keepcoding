@@ -4,8 +4,8 @@ services:
     image: mongo:7
     container_name: mongo_local
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     restart: always
     ports:
       - '27018:27017'
@@ -18,7 +18,7 @@ services:
     ports:
       - '8081:8081'
     environment:
-      ME_CONFIG_MONGODB_URL: mongodb://admin:admin123@mongodb-Backend-Avanzado:27017/?authSource=admin
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb-Backend-Avanzado:27017/?authSource=admin
       ME_CONFIG_BASICAUTH: 'false'
     depends_on:
       - mongodb-Backend-Avanzado

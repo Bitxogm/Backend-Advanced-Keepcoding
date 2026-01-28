@@ -80,10 +80,10 @@ TS_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.ts$')
 if [ -n "$TS_FILES" ]; then
     echo "Archivos a validar:"
     echo "$TS_FILES"
-    
+
     # Ejecutar ESLint solo en los archivos modificados
     npm run lint -- $TS_FILES
-    
+
     if [ $? -ne 0 ]; then
         echo ""
         echo "❌ ESLint encontró errores. Intenta ejecutar:"
@@ -93,7 +93,7 @@ if [ -n "$TS_FILES" ]; then
         echo "   git commit --no-verify"
         exit 1
     fi
-    
+
     echo "✅ ESLint: Sin errores"
 else
     echo "ℹ️  No hay archivos TypeScript para validar"

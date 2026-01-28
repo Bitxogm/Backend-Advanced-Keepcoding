@@ -12,7 +12,9 @@
     "start": "node dist/src/server.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "prettier": "prettier --write src/**/*.ts"
   },
   "keywords": [],

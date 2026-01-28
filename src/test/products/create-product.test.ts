@@ -3,18 +3,18 @@ import request from "supertest";
 
 import { app } from "../../server";
 
+import { generateRandomProductData } from "./helpers/create-random-product";
+
 describe("POST / products/:id", () => {
   // Aquí irán las pruebas para la creación de productos
 
   test("should  return 404 if th product is not create", async () => {
-
-
     // Intentar crear un producto sin enviar datos necesarios
-    const createFailproduct ={} 
+    const createFailproduct = {};
 
-    const response =await request(app).post("/products").send({
+    const response = await request(app).post("/products").send({
       // Enviamos datos producto vacio
-      createFailproduct
+      createFailproduct,
     });
 
     // Verificar que devuelve 400 y el mensaje de error correcto
@@ -26,10 +26,8 @@ describe("POST / products/:id", () => {
 
   test("Given valid product data, should create and return the product", async () => {
     // Datos válidos para crear un producto
-    const newProductData = {
-      name: "Samsung Galaxy S23",
-      description: "Brand new, unopened box",
-    };
+    const newProductData = generateRandomProductData();
+    console.log(newProductData);
 
     // Hacer petición POST para crear el producto
     const response = await request(app).post("/products").send(newProductData);

@@ -1,6 +1,6 @@
-import { afterAll, afterEach, beforeAll } from "@jest/globals";
-import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
+import { afterAll, afterEach, beforeAll } from '@jest/globals';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 
 let mongo: MongoMemoryServer;
 

@@ -24,7 +24,7 @@ const getEnv = (key: string, defaultValue?: string): string => {
  * Configuración de entorno exportada y tipada
  */
 export const env: Environment = {
-  NODE_ENV: (getEnv('NODE_ENV', 'development') as Environment['NODE_ENV']),
+  NODE_ENV: getEnv('NODE_ENV', 'development') as Environment['NODE_ENV'],
   PORT: parseInt(getEnv('PORT', '3000'), 10),
   MONGODB_URI: getEnv(
     'MONGODB_URI',
@@ -37,14 +37,12 @@ export const env: Environment = {
  */
 export const validateEnvironment = (): void => {
   const requiredVars: (keyof Environment)[] = ['MONGODB_URI', 'PORT'];
-  
+
   const missing = requiredVars.filter(key => !env[key]);
-  
+
   if (missing.length > 0) {
-    throw new Error(
-      `❌ Variables de entorno requeridas no configuradas: ${missing.join(', ')}`
-    );
+    throw new Error(`❌ Variables de entorno requeridas no configuradas: ${missing.join(', ')}`);
   }
-  
+
   console.log(`🔧 Environment: ${env.NODE_ENV}`);
 };

@@ -1,13 +1,9 @@
 //Creamos router de express para tener todos los endpoints relacionados con productos en un solo archivo
-import express from "express";
-import type { Request, Response } from "express";
+import express from 'express';
+import type { Request, Response } from 'express';
 
-import {
-  ERROR_MESSAGES,
-  HTTP_STATUS,
-  SUCCESS_MESSAGES,
-} from "../config/constants";
-import Product from "../models/product";
+import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from '../config/constants';
+import Product from '../models/product';
 
 interface CreateProductBody {
   name: string;
@@ -17,7 +13,7 @@ interface CreateProductBody {
 const productRouter: express.Router = express.Router();
 
 // Endpoint to get all products
-productRouter.get("/", async (req: Request, res: Response): Promise<void> => {
+productRouter.get('/', async (req: Request, res: Response): Promise<void> => {
   const products = await Product.find();
   res.json({
     count: products.length,
@@ -26,7 +22,7 @@ productRouter.get("/", async (req: Request, res: Response): Promise<void> => {
 });
 
 productRouter.get(
-  "/:productId",
+  '/:productId',
   async (req: Request<{ productId: string }>, res: Response): Promise<void> => {
     const productId = req.params.productId;
 
@@ -38,25 +34,18 @@ productRouter.get(
         items: product ? [product] : [],
       });
     } else {
-      res
-        .status(HTTP_STATUS.NOT_FOUND)
-        .json({ message: ERROR_MESSAGES.PRODUCT_NOT_FOUND });
+      res.status(HTTP_STATUS.NOT_FOUND).json({ message: ERROR_MESSAGES.PRODUCT_NOT_FOUND });
     }
-  },
+  }
 );
 
 productRouter.post(
-  "/",
-  async (
-    req: Request<{}, {}, CreateProductBody>,
-    res: Response,
-  ): Promise<void> => {
+  '/',
+  async (req: Request<{}, {}, CreateProductBody>, res: Response): Promise<void> => {
     const { name, description } = req.body;
 
     if (!name || !description) {
-      res
-        .status(HTTP_STATUS.BAD_REQUEST)
-        .json({ message: ERROR_MESSAGES.REQUIRED_FIELDS });
+      res.status(HTTP_STATUS.BAD_REQUEST).json({ message: ERROR_MESSAGES.REQUIRED_FIELDS });
       return;
     }
 
@@ -68,14 +57,14 @@ productRouter.post(
     const savedProduct = await newProduct.save();
 
     res.status(HTTP_STATUS.CREATED).json({ item: savedProduct });
-  },
+  }
 );
 
 productRouter.patch(
-  "/:productId",
+  '/:productId',
   async (
     req: Request<{ productId: string }, {}, CreateProductBody>,
-    res: Response,
+    res: Response
   ): Promise<void> => {
     // Sacamos de la peticion todos los datos que necesitamos para trabajar con ellos
     const { productId } = req.params;
@@ -84,21 +73,19 @@ productRouter.patch(
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       { name, description },
-      { new: true },
+      { new: true }
     );
 
     if (updatedProduct) {
       res.json({ item: updatedProduct });
     } else {
-      res
-        .status(HTTP_STATUS.NOT_FOUND)
-        .json({ message: ERROR_MESSAGES.PRODUCT_NOT_FOUND });
+      res.status(HTTP_STATUS.NOT_FOUND).json({ message: ERROR_MESSAGES.PRODUCT_NOT_FOUND });
     }
-  },
+  }
 );
 
 productRouter.delete(
-  "/:productId",
+  '/:productId',
   async (req: Request<{ productId: string }>, res: Response): Promise<void> => {
     const { productId } = req.params;
 
@@ -107,11 +94,9 @@ productRouter.delete(
     if (deletedProduct) {
       res.json({ message: SUCCESS_MESSAGES.PRODUCT_DELETED });
     } else {
-      res
-        .status(HTTP_STATUS.NOT_FOUND)
-        .json({ message: ERROR_MESSAGES.PRODUCT_NOT_FOUND });
+      res.status(HTTP_STATUS.NOT_FOUND).json({ message: ERROR_MESSAGES.PRODUCT_NOT_FOUND });
     }
-  },
+  }
 );
 
 export default productRouter;

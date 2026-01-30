@@ -4,7 +4,7 @@ import type { Application } from 'express';
 import { API_CONFIG } from './config/constants';
 import { connectToMongoDB } from './config/database';
 import { env, validateEnvironment } from './config/environment';
-import productRouter from './routes/product.routes';
+import productRouter from './ui/routes/product.routes';
 
 export const app: Application = express();
 

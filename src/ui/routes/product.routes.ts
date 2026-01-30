@@ -2,9 +2,10 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 
-import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from '../config/constants';
-import Product from '../infrastructure/models/product-model';
-import { createProductController } from '../ui/controllers/product/create-product-controller';
+import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from '../../config/constants';
+import Product from '../../infrastructure/models/product-model';
+import { createProductController } from '../controllers/product/create-product-controller';
+import { getAllProductsController } from '../controllers/product/getAll-products-controller';
 
 interface CreateProductBody {
   name: string;
@@ -13,14 +14,8 @@ interface CreateProductBody {
 
 const productRouter: express.Router = express.Router();
 
-// Endpoint to get all products
-productRouter.get('/', async (req: Request, res: Response): Promise<void> => {
-  const products = await Product.find();
-  res.json({
-    count: products.length,
-    items: products,
-  });
-});
+// Endpoint to get all products - Usando arquitectura hexagonal
+productRouter.get('/', getAllProductsController);
 
 productRouter.get(
   '/:productId',

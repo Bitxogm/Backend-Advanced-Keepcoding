@@ -19,4 +19,19 @@ export class ProductMongoDbRepository implements ProductRepository {
       createdAt: savedProduct.createdAt,
     });
   }
+
+  async getAll(): Promise<Product[]> {
+    const productsFromDb = await ProductModel.find();
+
+    // Convertimos los modelos de Mongoose a entidades de dominio
+    return productsFromDb.map(
+      productModel =>
+        new Product({
+          id: productModel._id.toString(),
+          name: productModel.name,
+          description: productModel.description,
+          createdAt: productModel.createdAt,
+        })
+    );
+  }
 }

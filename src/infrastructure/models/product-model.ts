@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 export interface IProduct extends Document {
   name: string;
   description: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const productSchema = new mongoose.Schema<IProduct>(
@@ -28,6 +30,6 @@ const productSchema = new mongoose.Schema<IProduct>(
   }
 );
 
-const Product = mongoose.model<IProduct>('Product', productSchema, 'products');
+const ProductModel = mongoose.model<IProduct>('Product', productSchema, 'products');
 
-export default Product;
+export default ProductModel;

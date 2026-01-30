@@ -10,7 +10,7 @@ beforeAll(async () => {
   const uri = mongo.getUri();
 
   await mongoose.connect(uri);
-});
+}, 60000); // 60 segundos de timeout para la primera descarga
 
 // n veces, despues de cada test
 afterEach(async () => {
@@ -24,5 +24,7 @@ afterEach(async () => {
 // 1 vez, después de los tests
 afterAll(async () => {
   await mongoose.connection.close();
-  await mongo.stop();
+  if (mongo) {
+    await mongo.stop();
+  }
 });

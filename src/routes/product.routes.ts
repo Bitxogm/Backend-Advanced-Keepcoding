@@ -3,7 +3,8 @@ import express from 'express';
 import type { Request, Response } from 'express';
 
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from '../config/constants';
-import Product from '../models/product';
+import Product from '../infrastructure/models/product-model';
+import { createProductController } from '../ui/controllers/product/create-product-controller';
 
 interface CreateProductBody {
   name: string;
@@ -39,26 +40,8 @@ productRouter.get(
   }
 );
 
-productRouter.post(
-  '/',
-  async (req: Request<{}, {}, CreateProductBody>, res: Response): Promise<void> => {
-    const { name, description } = req.body;
-
-    if (!name || !description) {
-      res.status(HTTP_STATUS.BAD_REQUEST).json({ message: ERROR_MESSAGES.REQUIRED_FIELDS });
-      return;
-    }
-
-    const newProduct = new Product({
-      name,
-      description,
-    });
-
-    const savedProduct = await newProduct.save();
-
-    res.status(HTTP_STATUS.CREATED).json({ item: savedProduct });
-  }
-);
+// Usamos el controlador correctamente pasándolo como middleware
+productRouter.post('/', createProductController);
 
 productRouter.patch(
   '/:productId',

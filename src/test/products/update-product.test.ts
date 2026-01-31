@@ -1,7 +1,7 @@
 import { describe, test, expect } from '@jest/globals';
 import request from 'supertest';
 
-import { app } from '../../server';
+import { app } from '@/server';
 
 import { generateRandomProductData } from './helpers/create-random-product';
 
@@ -23,7 +23,7 @@ describe('PATCH / products/productId', () => {
     const newProductData = generateRandomProductData();
 
     const createResponse = await request(app).post('/products').send(newProductData);
-    const createdProductId = createResponse.body.item._id;
+    const createdProductId = createResponse.body.item.id;
 
     // Datos para actualizar el producto
     const updateData = generateRandomProductData();

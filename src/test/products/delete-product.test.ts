@@ -1,7 +1,7 @@
 import { describe, test, expect } from '@jest/globals';
 import request from 'supertest';
 
-import { app } from '../../server';
+import { app } from '@/server';
 
 import { generateRandomProductData } from './helpers/create-random-product';
 
@@ -21,7 +21,7 @@ describe('DELETE / products/:id', () => {
     const productData = generateRandomProductData();
     const createdProductResponse = await request(app).post('/products').send(productData);
 
-    const productId = createdProductResponse.body.item._id;
+    const productId = createdProductResponse.body.item.id;
 
     // Hacer petición DELETE de ese producto específico
     const response = await request(app).delete(`/products/${productId}`);

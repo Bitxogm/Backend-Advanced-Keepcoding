@@ -28,9 +28,9 @@ export default [
     settings: {
       'import/resolver': {
         typescript: {
+          alwaysTryTypes: true,
           project: './tsconfig.json',
         },
-        node: true,
       },
     },
     rules: {
@@ -57,7 +57,7 @@ export default [
       'quotes': ['error', 'single', { avoidEscape: true }],
       'semi': ['error', 'always'],
       'no-console': 'off',
-      
+
       // Disable base rule as it can report incorrect errors
       'no-unused-vars': 'off',
     },

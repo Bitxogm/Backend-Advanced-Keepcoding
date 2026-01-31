@@ -1,8 +1,62 @@
-import Product from '../../../domain/entities/Product';
-import type ProductRepository from '../../../domain/repositories/ProductRepository';
-import ProductModel from '../../models/product-model';
+import Product from '@domain/entities/Product';
+import type ProductRepository from '@domain/repositories/ProductRepository';
+import ProductModel from '@infrastructure/models/product-model';
 
 export class ProductMongoDbRepository implements ProductRepository {
+  async updateOne(
+    id: string,
+    updateData: { name?: string; description?: string }
+  ): Promise<Product | null> {
+    const updatedProduct = await ProductModel.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return null;
+    }
+
+    return new Product({
+      id: updatedProduct._id.toString(),
+      name: updatedProduct.name,
+      description: updatedProduct.description,
+      createdAt: updatedProduct.createdAt,
+    });
+  }
+  async deleteOne(id: string): Promise<boolean> {
+    const result = await ProductModel.findByIdAndDelete(id);
+    return result !== null;
+  }
+
+  async findProductById(id: string): Promise<Product | null> {
+    const productModel = await ProductModel.findById(id);
+
+    if (!productModel) {
+      return null;
+    }
+
+    return new Product({
+      id: productModel._id.toString(),
+      name: productModel.name,
+      description: productModel.description,
+      createdAt: productModel.createdAt,
+    });
+  }
+  async findById(id: string): Promise<Product | null> {
+    const productModel = await ProductModel.findById(id);
+
+    if (!productModel) {
+      return null;
+    }
+
+    return new Product({
+      id: productModel._id.toString(),
+      name: productModel.name,
+      description: productModel.description,
+      createdAt: productModel.createdAt,
+    });
+  }
   async createOne({ name, description }: { name: string; description: string }): Promise<Product> {
     const newProductModel = new ProductModel({
       name,

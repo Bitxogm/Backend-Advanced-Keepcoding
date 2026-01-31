@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 
-import { ERROR_MESSAGES, HTTP_STATUS } from '../../../config/constants';
-import { CreateProductUseCase } from '../../../domain/use-cases/product/create-product-usecase';
-// import { ProductMemoryRepository } from '../../../infrastructure/repositories/product/product-memory-repository';
-import { ProductMongoDbRepository } from '../../../infrastructure/repositories/product/product-mongodb-repository';
+import { ERROR_MESSAGES, HTTP_STATUS } from '@config/constants';
+import { CreateProductUseCase } from '@domain/use-cases/create-product-usecase';
+// import { ProductMemoryRepository } from '@infrastructure/repositories/product/product-memory-repository';
+import { ProductMongoDbRepository } from '@infrastructure/repositories/product/product-mongodb-repository';
 
 export const createProductController = async (request: Request, response: Response) => {
   const { name, description } = request.body;

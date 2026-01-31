@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 
-import { HTTP_STATUS } from '../../../config/constants';
-import { GetAllProductsUseCase } from '../../../domain/use-cases/product/getAll-products-usecase';
-import { ProductMongoDbRepository } from '../../../infrastructure/repositories/product/product-mongodb-repository';
+import { HTTP_STATUS } from '@config/constants';
+import { GetAllProductsUseCase } from '@domain/use-cases/getAll-products-usecase';
+import { ProductMongoDbRepository } from '@infrastructure/repositories/product/product-mongodb-repository';
 
 export const getAllProductsController = async (request: Request, response: Response) => {
   const productMongodbRepository = new ProductMongoDbRepository();

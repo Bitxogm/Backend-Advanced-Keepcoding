@@ -8,8 +8,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "dev": "tsx watch --tsconfig tsconfig.json src/server.ts",
+    "build": "tsc && tsc-alias",
     "start": "node dist/src/server.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
@@ -55,6 +55,7 @@
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

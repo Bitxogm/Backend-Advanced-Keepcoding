@@ -1,0 +1,34 @@
+import type { Request, Response } from 'express';
+
+import { ERROR_MESSAGES, HTTP_STATUS } from '@config/constants';
+import { FindProductByIdUseCase } from '@domain/use-cases/find-productById-usecase';
+import { ProductMongoDbRepository } from '@infrastructure/repositories/product/product-mongodb-repository';
+
+export const findByIdProductController = async (
+  request: Request<{ productId: string }>,
+  response: Response
+) => {
+  try {
+    const productId = request.params.productId;
+
+    const productMongodbRepository = new ProductMongoDbRepository();
+    const findProductByIdUseCase = new FindProductByIdUseCase(productMongodbRepository);
+
+    const product = await findProductByIdUseCase.execute(productId);
+
+    if (product) {
+      response.json({
+        count: product ? 1 : 0,
+        items: product ? [product] : [],
+      });
+    } else {
+      response.status(HTTP_STATUS.NOT_FOUND).json({ message: ERROR_MESSAGES.PRODUCT_NOT_FOUND });
+    }
+  } catch (error) {
+    console.error('Error in findByIdProductController:', error);
+    response.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      message: 'Internal server error',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};

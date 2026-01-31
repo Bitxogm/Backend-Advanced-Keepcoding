@@ -1,7 +1,7 @@
 import { describe, test, expect } from '@jest/globals';
 import request from 'supertest';
 
-import { app } from '../../server';
+import { app } from '@/server';
 
 import { generateRandomProductData } from './helpers/create-random-product';
 
@@ -20,7 +20,7 @@ describe('GET / products/:id', () => {
     const productData = generateRandomProductData();
     const createdProductResponse = await request(app).post('/products').send(productData);
 
-    const productId = createdProductResponse.body.item._id;
+    const productId = createdProductResponse.body.item.id;
     // console.log(createdProductResponse.body);
 
     // Hacer petición GET de ese producto específico

@@ -1,5 +1,5 @@
-import type Product from '../../entities/Product';
-import type ProductRepository from '../../repositories/ProductRepository';
+import type Product from '@domain/entities/Product';
+import type ProductRepository from '@domain/repositories/ProductRepository';
 
 export class CreateProductUseCase {
   readonly productRepository: ProductRepository;

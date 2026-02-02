@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 
 import { CreateUserUsecase } from '@/domain/use-cases/user/create-user-usecase';
 import { UserMongoRepository } from '@/infrastructure/repositories/user/user-mongodb-repository';
-import { SecurtityBcryptService } from '@/infrastructure/service/security-bcrypt-service';
+import { SecurtityBcryptService } from '@/infrastructure/services/security-bcrypt-service';
 
 export const signupController = async (req: Request, res: Response) => {
   const userMongoRepository = new UserMongoRepository();

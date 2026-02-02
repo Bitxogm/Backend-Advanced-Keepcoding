@@ -1,3 +1,23 @@
+---
+## Seguridad y buenas prácticas con variables de entorno
+
+Nunca incluyas credenciales reales (usuarios, contraseñas, tokens) en archivos públicos o versionados.
+
+- Usa archivos `.env` para datos sensibles y agrégalo a `.gitignore`.
+- Proporciona un `.env.example` solo con valores de ejemplo o marcadores (`<tu_usuario>`, `<tu_password>`).
+- No subas tu archivo `.env` real al repositorio.
+
+**Ejemplo correcto:**
+```env
+MONGO_ROOT_USERNAME=<tu_usuario>
+MONGO_ROOT_PASSWORD=<tu_password>
+```
+
+**Ejemplo incorrecto:**
+```env
+MONGO_ROOT_USERNAME=admin
+MONGO_ROOT_PASSWORD=admin123
+```
 # Arquitectura Hexagonal: Guía para Mortales 🏗️
 
 ## ¿Qué demonios es esto? 🤯

@@ -1,5 +1,7 @@
 import Product from '@domain/entities/Product';
 import type ProductRepository from '@domain/repositories/ProductRepository';
+import type { ProductCreateQuery } from '@domain/types/ProductCreateQuery';
+import type { ProductUpdateQuery } from '@domain/types/ProductUpdateQuery';
 
 export class ProductMemoryRepository implements ProductRepository {
   readonly products: Product[] = [];
@@ -7,10 +9,7 @@ export class ProductMemoryRepository implements ProductRepository {
     // Inicializar con algunos productos de ejemplo si es necesario
     this.products = [];
   }
-  async updateOne(
-    id: string,
-    updateData: { name?: string; description?: string }
-  ): Promise<Product | null> {
+  async updateOne(id: string, updateData: ProductUpdateQuery): Promise<Product | null> {
     const index = this.products.findIndex(p => p.id === id);
     if (index === -1) {
       return Promise.resolve(null);
@@ -41,10 +40,9 @@ export class ProductMemoryRepository implements ProductRepository {
     const product = this.products.find(p => p.id === id);
     return Promise.resolve(product || null);
   }
-  async createOne({ name, description }: { name: string; description: string }): Promise<Product> {
+  async createOne(productData: ProductCreateQuery): Promise<Product> {
     const product = new Product({
-      name,
-      description,
+      ...productData,
       id: Date.now().toString(),
       createdAt: new Date(),
     });

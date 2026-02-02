@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
+import { DeleteProductUseCase } from '@/domain/use-cases/product/delete-product-usecase';
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from '@config/constants';
-import { DeleteProductUseCase } from '@domain/use-cases/delete-product-usecase';
 import { ProductMongoDbRepository } from '@infrastructure/repositories/product/product-mongodb-repository';
 
 export const deleteProductController = async (

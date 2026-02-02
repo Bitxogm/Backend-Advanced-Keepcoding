@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
+import { FindProductByIdUseCase } from '@/domain/use-cases/product/find-productById-usecase';
 import { ERROR_MESSAGES, HTTP_STATUS } from '@config/constants';
-import { FindProductByIdUseCase } from '@domain/use-cases/find-productById-usecase';
 import { ProductMongoDbRepository } from '@infrastructure/repositories/product/product-mongodb-repository';
 
 export const findByIdProductController = async (

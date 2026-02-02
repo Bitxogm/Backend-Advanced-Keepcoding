@@ -1,3 +1,23 @@
+---
+## Seguridad: Variables de entorno y credenciales
+
+Nunca pongas credenciales reales (usuarios, contraseñas, tokens) en archivos versionados o públicos.
+
+- Usa archivos `.env` (que están en `.gitignore`) para tus datos sensibles.
+- Usa archivos `.env.example` solo con valores de ejemplo o marcadores (`<tu_usuario>`, `<tu_password>`).
+- Nunca subas tu archivo `.env` real al repositorio.
+
+**Ejemplo seguro:**
+```env
+MONGO_ROOT_USERNAME=<tu_usuario>
+MONGO_ROOT_PASSWORD=<tu_password>
+```
+
+**NO HAGAS ESTO:**
+```env
+MONGO_ROOT_USERNAME=admin
+MONGO_ROOT_PASSWORD=admin123
+```
 # 🌐 BACKEND EXPLICADO SIMPLE
 
 ## ÍNDICE

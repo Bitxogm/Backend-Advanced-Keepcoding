@@ -1,8 +1,10 @@
 import type { Request, Response } from 'express';
 
+import { UpdateProductUseCase } from '@/domain/use-cases/product/update-product-usecase';
 import { ERROR_MESSAGES, HTTP_STATUS } from '@config/constants';
-import { UpdateProductUseCase } from '@domain/use-cases/update-product-usecase';
 import { ProductMongoDbRepository } from '@infrastructure/repositories/product/product-mongodb-repository';
+
+import type { UpdateProductDto } from './dto/update-product.dto';
 
 export const UpdateProductController = async (
   request: Request<{ productId: string }>,
@@ -10,12 +12,16 @@ export const UpdateProductController = async (
 ) => {
   try {
     const productId = request.params.productId;
-    const { name, description } = request.body;
 
+    const { name, description } = request.body;
+    const updateData: UpdateProductDto = { name, description };
     const productMongodbRepository = new ProductMongoDbRepository();
     const updateProductUseCase = new UpdateProductUseCase(productMongodbRepository);
-
-    const updatedProduct = await updateProductUseCase.execute(productId, { name, description });
+    // Mapeo explícito del DTO de la capa UI al DTO del dominio
+    const updatedProduct = await updateProductUseCase.execute(productId, {
+      name: updateData.name,
+      description: updateData.description,
+    });
 
     if (updatedProduct) {
       response.json({ item: updatedProduct });

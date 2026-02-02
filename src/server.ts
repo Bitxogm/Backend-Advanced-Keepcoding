@@ -6,6 +6,8 @@ import { connectToMongoDB } from '@config/database';
 import { env, validateEnvironment } from '@config/environment';
 import productRouter from '@ui/routes/product.routes';
 
+import authenticationRouter from './ui/routes/authentication.routes';
+
 export const app: Application = express();
 
 // Middleware to parse JSON bodies
@@ -13,6 +15,7 @@ app.use(express.json());
 
 // Use product routes
 app.use(API_CONFIG.PRODUCTS_PATH, productRouter);
+app.use('/auth', authenticationRouter); // Asegúrate de importar authenticationRouter
 
 const startHttpApi = (): void => {
   // Start the server

@@ -155,21 +155,30 @@ docker-compose down -v
 
 ## ⚙️ Configuración
 
+
 ### Variables de entorno
 
-Las variables de entorno se gestionan en `src/config/environment.ts` con valores por defecto:
+Las variables de entorno se gestionan en `src/config/environment.ts` y NUNCA deben contener credenciales reales en archivos versionados.
 
 - `NODE_ENV`: `development` | `production` | `test`
 - `PORT`: `3000`
-- `MONGODB_URI`: `mongodb://admin:admin123@localhost:27018/db?authSource=admin`
+- `MONGODB_URI`: Cadena de conexión a MongoDB (usa variables de entorno para usuario y password)
 
-Para usar variables personalizadas, crea un archivo `.env` en la raíz:
+**Importante:**
+- Copia `.env.example` a `.env` y pon tus credenciales reales SOLO en `.env`.
+- NUNCA subas `.env` ni credenciales reales al repositorio.
+- `.env` está en `.gitignore` y no será versionado.
 
+Ejemplo de `.env`:
 ```env
 NODE_ENV=development
 PORT=3000
-MONGODB_URI=tu_cadena_de_conexion
+MONGO_ROOT_USERNAME=admin
+MONGO_ROOT_PASSWORD=admin123
+MONGODB_URI=mongodb://admin:admin123@localhost:27018/db?authSource=admin
 ```
+
+En `.env.example` pon solo valores de ejemplo o marcadores (`<tu_usuario>`, `<tu_password>`).
 
 ## 🧪 Git Hooks
 

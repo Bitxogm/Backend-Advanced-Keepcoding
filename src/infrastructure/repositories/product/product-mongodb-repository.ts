@@ -1,12 +1,11 @@
 import Product from '@domain/entities/Product';
 import type ProductRepository from '@domain/repositories/ProductRepository';
+import type { ProductCreateQuery } from '@domain/types/ProductCreateQuery';
+import type { ProductUpdateQuery } from '@domain/types/ProductUpdateQuery';
 import ProductModel from '@infrastructure/models/product-model';
 
 export class ProductMongoDbRepository implements ProductRepository {
-  async updateOne(
-    id: string,
-    updateData: { name?: string; description?: string }
-  ): Promise<Product | null> {
+  async updateOne(id: string, updateData: ProductUpdateQuery): Promise<Product | null> {
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       id,
       { $set: updateData },
@@ -43,28 +42,10 @@ export class ProductMongoDbRepository implements ProductRepository {
       createdAt: productModel.createdAt,
     });
   }
-  async findById(id: string): Promise<Product | null> {
-    const productModel = await ProductModel.findById(id);
 
-    if (!productModel) {
-      return null;
-    }
-
-    return new Product({
-      id: productModel._id.toString(),
-      name: productModel.name,
-      description: productModel.description,
-      createdAt: productModel.createdAt,
-    });
-  }
-  async createOne({ name, description }: { name: string; description: string }): Promise<Product> {
-    const newProductModel = new ProductModel({
-      name,
-      description,
-    });
-
+  async createOne(productData: ProductCreateQuery): Promise<Product> {
+    const newProductModel = new ProductModel(productData);
     const savedProduct = await newProductModel.save();
-
     // Convertimos el modelo de Mongoose a la entidad de dominio
     return new Product({
       id: savedProduct._id.toString(),

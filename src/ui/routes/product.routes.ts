@@ -7,6 +7,7 @@ import { getAllProductsController } from '@ui/controllers/product/getAll-product
 import { deleteProductController } from '../controllers/product/delete-product-controller';
 import { findByIdProductController } from '../controllers/product/findById-product-controller';
 import { UpdateProductController } from '../controllers/product/update-product-controller';
+import { authenticationMiddleware } from '../middlewares/authentication-middleware';
 
 // interface CreateProductBody {
 //   name: string;
@@ -21,7 +22,7 @@ productRouter.get('/', getAllProductsController);
 productRouter.get('/:productId', findByIdProductController);
 
 // Usamos el controlador correctamente pasándolo como middleware
-productRouter.post('/', createProductController);
+productRouter.post('/', [authenticationMiddleware], createProductController);
 
 productRouter.patch('/:productId', UpdateProductController);
 

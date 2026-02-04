@@ -4,8 +4,12 @@ import jwt from 'jsonwebtoken';
 import type { User } from '@/domain/entities/User';
 import type SecurityServices from '@/domain/services/SecurityServices';
 
-export class SecurtityBcryptService implements SecurityServices {
+export class SecurityBcryptService implements SecurityServices {
   private readonly jwtSecret: string = 'werikufghweyu8uur';
+  verifyJWT(token: string): { userId: string } {
+    const data = jwt.verify(token, this.jwtSecret) as { userId: string };
+    return data;
+  }
 
   generateJWT(user: User): Promise<string> {
     const token = jwt.sign({ userId: user.id }, this.jwtSecret, {

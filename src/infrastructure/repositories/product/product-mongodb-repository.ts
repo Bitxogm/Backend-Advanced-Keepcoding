@@ -21,6 +21,7 @@ export class ProductMongoDbRepository implements ProductRepository {
       name: updatedProduct.name,
       description: updatedProduct.description,
       createdAt: updatedProduct.createdAt,
+      userId: updatedProduct.userId,
     });
   }
   async deleteOne(id: string): Promise<boolean> {
@@ -40,6 +41,7 @@ export class ProductMongoDbRepository implements ProductRepository {
       name: productModel.name,
       description: productModel.description,
       createdAt: productModel.createdAt,
+      userId: productModel.userId,
     });
   }
 
@@ -52,6 +54,7 @@ export class ProductMongoDbRepository implements ProductRepository {
       name: savedProduct.name,
       description: savedProduct.description,
       createdAt: savedProduct.createdAt,
+      userId: savedProduct.userId,
     });
   }
 
@@ -66,6 +69,7 @@ export class ProductMongoDbRepository implements ProductRepository {
           name: productModel.name,
           description: productModel.description,
           createdAt: productModel.createdAt,
+          userId: productModel.userId,
         })
     );
   }

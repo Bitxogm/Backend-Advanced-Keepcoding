@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 export interface IProduct extends Document {
   name: string;
   description: string;
+  userId: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,17 +16,16 @@ const productSchema = new mongoose.Schema<IProduct>(
       type: String,
       required: true,
     },
-    // price: {
-    //   type: Number,
-    //   required: true
-    // },
     description: {
+      type: String,
+      required: true,
+    },
+    userId: {
       type: String,
       required: true,
     },
   },
   {
-    // Añadimos timestamps para tener createdAt y updatedAt automáticamente
     timestamps: true,
   }
 );

@@ -1,3 +1,4 @@
+import { EntityNotFoundError } from '@/domain/types/errors';
 import type ProductRepository from '@domain/repositories/ProductRepository';
 
 export class DeleteProductUseCase {
@@ -6,7 +7,7 @@ export class DeleteProductUseCase {
   public async execute(productId: string): Promise<boolean> {
     const existingProduct = await this.productRepository.findProductById(productId);
     if (!existingProduct) {
-      return false;
+      throw new EntityNotFoundError('Product', productId);
     }
 
     const deleted = await this.productRepository.deleteOne(productId);

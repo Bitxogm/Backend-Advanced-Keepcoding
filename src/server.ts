@@ -6,6 +6,7 @@ import { connectToMongoDB } from '@config/database';
 import { env, validateEnvironment } from '@config/environment';
 import productRouter from '@ui/routes/product.routes';
 
+import { errorHandlerMiddleware } from './ui/middlewares/error-handler-middleware';
 import authenticationRouter from './ui/routes/authentication.routes';
 
 export const app: Application = express();
@@ -15,7 +16,10 @@ app.use(express.json());
 
 // Use product routes
 app.use(API_CONFIG.PRODUCTS_PATH, productRouter);
-app.use('/auth', authenticationRouter); // Asegúrate de importar authenticationRouter
+app.use('/auth', authenticationRouter);
+
+// Error handler middleware siempre al final para capturar errores de rutas anteriores
+app.use(errorHandlerMiddleware);
 
 const startHttpApi = (): void => {
   // Start the server

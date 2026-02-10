@@ -6,7 +6,8 @@ import { ProductMongoDbRepository } from '@infrastructure/repositories/product/p
 
 export const findByIdProductController = async (
   request: Request<{ productId: string }>,
-  response: Response
+  response: Response,
+  next: (err?: any) => void
 ) => {
   try {
     const productId = request.params.productId;
@@ -25,10 +26,6 @@ export const findByIdProductController = async (
       response.status(HTTP_STATUS.NOT_FOUND).json({ message: ERROR_MESSAGES.PRODUCT_NOT_FOUND });
     }
   } catch (error) {
-    console.error('Error in findByIdProductController:', error);
-    response.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      message: 'Internal server error',
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    next(error);
   }
 };

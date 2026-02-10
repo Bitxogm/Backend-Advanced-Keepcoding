@@ -1,29 +1,44 @@
 import type { Request, Response } from 'express';
+import * as Zod from 'zod';
 
 import { LoginUserUseCase } from '@/domain/use-cases/user/login-user-usecase';
 import { UserMongoRepository } from '@/infrastructure/repositories/user/user-mongodb-repository';
-import { SecurtityBcryptService } from '@/infrastructure/services/security-bcrypt-service';
+import { SecurityBcryptService } from '@/infrastructure/services/security-bcrypt-service';
 
-export const signinController = async (req: Request, res: Response) => {
+const signinBodyValidator = Zod.object({
+  email: Zod.string().email('Invalid email'),
+  password: Zod.string(),
+});
+
+export const signinController = async (
+  request: Request,
+  response: Response,
+  next: (err?: any) => void
+) => {
   try {
-    if (!req.body || typeof req.body !== 'object') {
-      return res.status(400).json({ message: 'Email and password are required.' });
-    }
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required.' });
-    }
+    const { email, password } = signinBodyValidator.parse(request.body);
 
     const userMongoRepository = new UserMongoRepository();
-    const securityService = new SecurtityBcryptService();
-    const loginUserUseCase = new LoginUserUseCase(userMongoRepository, securityService);
+    const securityBcryptService = new SecurityBcryptService();
 
-    await loginUserUseCase.execute({ email, password });
-    return res.status(200).json({ message: 'User signed in successfully.' });
+    const loginUserUsecase = new LoginUserUseCase(userMongoRepository, securityBcryptService);
+
+    const { token } = await loginUserUsecase.execute({
+      email: email,
+      password: password,
+    });
+
+    response.json({
+      message: 'User signed in successfully.',
+      token: token,
+    });
   } catch (error) {
-    if (error instanceof Error) {
-      return res.status(401).json({ message: error.message });
+    if (error instanceof Zod.ZodError) {
+      // If it's a validation error from Zod, convert to a more user-friendly message
+      response.status(400).json({ message: 'Email and password are required.' });
+    } else {
+      // Pass other errors to the error handler middleware
+      next(error);
     }
-    return res.status(500).json({ message: 'Internal server error.' });
   }
 };

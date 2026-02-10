@@ -3,12 +3,17 @@ import jwt from 'jsonwebtoken';
 
 import type { User } from '@/domain/entities/User';
 import type SecurityServices from '@/domain/services/SecurityServices';
+import { UnauthorizedError } from '@/domain/types/errors';
 
 export class SecurityBcryptService implements SecurityServices {
   private readonly jwtSecret: string = 'werikufghweyu8uur';
   verifyJWT(token: string): { userId: string } {
-    const data = jwt.verify(token, this.jwtSecret) as { userId: string };
-    return data;
+    try {
+      const data = jwt.verify(token, this.jwtSecret) as { userId: string };
+      return data;
+    } catch {
+      throw new UnauthorizedError('Invalid or expired token');
+    }
   }
 
   generateJWT(user: User): Promise<string> {
@@ -24,6 +29,11 @@ export class SecurityBcryptService implements SecurityServices {
   }
 
   async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
-    return await bcrypt.compare(password, hashedPassword);
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+    if (!isMatch) {
+      throw new UnauthorizedError('Invalid password');
+    } else {
+      return isMatch;
+    }
   }
 }

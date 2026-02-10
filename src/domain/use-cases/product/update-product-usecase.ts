@@ -1,7 +1,7 @@
 import type { ProductUpdateQuery } from '@/domain/types/ProductUpdateQuery';
+import { EntityNotFoundError } from '@/domain/types/errors';
 import type Product from '@domain/entities/Product';
 import type ProductRepository from '@domain/repositories/ProductRepository';
-
 
 export class UpdateProductUseCase {
   private readonly productRepository: ProductRepository;
@@ -13,7 +13,7 @@ export class UpdateProductUseCase {
   public async execute(productId: string, updateData: ProductUpdateQuery): Promise<Product | null> {
     const existingProduct = await this.productRepository.findProductById(productId);
     if (!existingProduct) {
-      return null; // O lanzar una excepción si prefieres
+      throw new EntityNotFoundError('Product', productId);
     }
 
     const updatedProductData: ProductUpdateQuery = {

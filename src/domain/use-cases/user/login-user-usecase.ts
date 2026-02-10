@@ -1,5 +1,6 @@
 import type { UserRepository } from '@/domain/repositories/UserRepository';
 import type SecurityServices from '@/domain/services/SecurityServices';
+import { UnauthorizedError } from '@/domain/types/errors';
 
 export class LoginUserUseCase {
   private readonly userRepository: UserRepository;
@@ -11,21 +12,28 @@ export class LoginUserUseCase {
     this.securityService = securityService;
   }
 
-  async execute({ email, password }: { email: string; password: string }): Promise<void> {
+  async execute({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<{ token: string }> {
     const existingUser = await this.userRepository.findUserByEmail(email);
 
     if (!existingUser) {
-      throw new Error('User not found');
+      throw new UnauthorizedError('User not found');
     }
 
-    const isPasswordValid = await this.securityService.comparePasswords(
-      password,
-      existingUser.password
-    );
-    if (!isPasswordValid) {
-      throw new Error('Invalid password');
-    } else {
-      await this.securityService.generateJWT(existingUser);
+    try {
+      await this.securityService.comparePasswords(password, existingUser.password);
+    } catch (error) {
+      if (error instanceof UnauthorizedError) {
+        throw error;
+      }
+      throw new UnauthorizedError('Invalid password');
     }
+    const token = await this.securityService.generateJWT(existingUser);
+    return { token };
   }
 }

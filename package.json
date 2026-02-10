@@ -11,6 +11,8 @@
     "dev": "tsx watch --tsconfig tsconfig.json src/server.ts",
     "build": "tsc && tsc-alias",
     "start": "node dist/src/server.js",
+    "start:staging": "node NODE_ENV=staging dist/src/server.js",
+    "start:production": "node NODE_ENV=production dist/src/server.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
@@ -31,9 +33,12 @@
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "http-status": "^2.1.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.1.5"
+    "mongoose": "^9.1.5",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.2.0",
